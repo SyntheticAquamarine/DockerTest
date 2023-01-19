@@ -1,4 +1,5 @@
 from flask import Flask, render_template
+from flask import Flask, request, escape, make_response
 from matplotlib.backends.backend_agg import FigureCanvasAgg as FigureCanvas
 from matplotlib.figure import Figure
 import io
@@ -6,8 +7,20 @@ import urllib
 
 app = Flask(__name__)
 
-@app.route('/graph/<float:a>/<float:b>/<float:c>/<float:xmin>/<float:xmax>/<float:ymin>/<float:ymax>')
-def graph(a, b, c, xmin, xmax, ymin, ymax):
+@app.route('/Test')
+def show_test():
+    return "Test"
+
+@app.route('/')
+def graph():
+    a = request.args.get('a', 1, type=int)
+    b = request.args.get('b', 1, type=int)
+    c = request.args.get('c', 5, type=int)
+    xmin = request.args.get('xmin', -50, type=int)
+    xmax = request.args.get('xmax', 50, type=int)
+    ymin = request.args.get('ymin', -50, type=int)
+    ymax = request.args.get('ymax', 50, type=int)
+    
     fig = Figure()
     axis = fig.add_subplot(1, 1, 1)
 
@@ -25,5 +38,9 @@ def graph(a, b, c, xmin, xmax, ymin, ymax):
     response.mimetype = 'image/png'
     return response
 
+#if __name__ == '__main__':
+#    app.run(debug=True)
+
+
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(debug=False,host='0.0.0.0', port=5000)

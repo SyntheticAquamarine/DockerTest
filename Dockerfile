@@ -3,4 +3,8 @@ WORKDIR /app
 COPY requirements.txt .
 RUN pip install -r requirements.txt
 COPY app/* .
-CMD ["/bin/bash", "start.sh"]
+EXPOSE 5000
+ENV FLASK_APP=ZadanieDocker
+ENV FLASK_DEBUG=1
+ENV FLASK_RUN_HOST=0.0.0.0
+CMD ["flask", "run"]
